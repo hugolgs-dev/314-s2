@@ -36,6 +36,11 @@ export class UsersService {
     @Body() updateUserDto: UpdateUserDto,
   ): Promise<User> {
     const user = await this.userRepository.findOne({ where: { id } });
+
+    if (!user) {
+      throw new NotFoundException('Utilisateur non trouvé');
+    }
+
     Object.assign(user, updateUserDto);
     return this.userRepository.save(user);
   }
