@@ -52,6 +52,6 @@ export class UsersService {
         `L'utilisateur avec l'ID ${id} n'a pas été trouvé`,
       );
     }
-    await this.userRepository.delete(user);
+    await this.userRepository.delete(id);
   }
 }
