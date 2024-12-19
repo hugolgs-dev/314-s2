@@ -36,7 +36,7 @@ describe('UsersController', () => {
   /**************************** Pour la fonction create() ****************************/
 
   describe('create', () => {
-    // Pour le use case OK
+    /** Pour le use case OK **/
     it('On ajoute un utilisateur (use case OK)', async () => {
       const newUser: CreateUserDto = {
         firstName: 'firstNameOK',
@@ -58,7 +58,7 @@ describe('UsersController', () => {
       expect(result).toHaveProperty('updatedAt');
       expect(result.id).toBeDefined();
     });
-    // Pour le use case KO
+    /** Pour le use case KO **/
     it("Si les données générées pendant la création d'un utilisateur sont invalides (use case KO)", async () => {
       const newInvalidUser: CreateUserDto = {
         firstName: '',
@@ -76,14 +76,14 @@ describe('UsersController', () => {
   /**************************** Pour la fonction findAll() ****************************/
 
   describe('findAll', () => {
-    // Pour le use case OK
+    /** Pour le use case OK **/
     it("On accède à un tableau d'utilisateurs présents (use case OK)", async () => {
       const result = await controller.findAll();
       mockUsersService.findAll.mockReturnValue(result);
 
       expect(await controller.findAll()).toEqual(result);
     });
-    // Pour le use case KO
+    /** Pour le use case KO **/
     it('(use case KO)', async () => {
       mockUsersService.findAll.mockRejectedValue(
         new Error('Erreur dans la base de données'),
@@ -98,7 +98,7 @@ describe('UsersController', () => {
   /**************************** Pour la fonction findOne() ****************************/
 
   describe('findOne', () => {
-    // Pour le use case OK
+    /** Pour le use case OK **/
     it('On retourne un utilisateur unique (use case OK)', async () => {
       const userReturned = {
         id: 10,
@@ -106,14 +106,14 @@ describe('UsersController', () => {
         lastName: 'lastNameOK',
       };
       mockUsersService.findOne.mockReturnValue(userReturned);
-      expect(await controller.findOne('10')).toEqual(userReturned);
+      expect(await controller.findOne(10)).toEqual(userReturned.id);
     });
-    // Pour le use case KO
+    /** Pour le use case KO **/
     it('Lance une erreur NotFoundException (use case KO)', async () => {
       mockUsersService.findOne.mockRejectedValue(
         new NotFoundException('Utilisateur non trouvé'),
       );
-      await expect(controller.findOne('10')).rejects.toThrow(
+      await expect(controller.findOne(10)).rejects.toThrow(
         'Utilisateur non trouvé',
       );
     });
@@ -122,7 +122,7 @@ describe('UsersController', () => {
   /**************************** Pour la fonction update() ****************************/
 
   describe('update', () => {
-    // Pour le use case OK
+    /** Pour le use case OK **/
     it('On met à jour un utilisateur (use case OK)', async () => {
       const updatedUser: UpdateUserDto = {
         firstName: 'updatedFirstNameOK',
@@ -134,9 +134,9 @@ describe('UsersController', () => {
         lastName: 'updatedLastNameOK',
       };
       mockUsersService.update.mockReturnValue(result);
-      expect(await controller.update('10', updatedUser)).toEqual(result);
+      expect(await controller.update(10, updatedUser)).toEqual(result);
     });
-    // Pour le use case KO
+    /** Pour le use case KO **/
     it('Lance une erreur NotFoundException (use case KO)', async () => {
       const updatedUser: UpdateUserDto = {
         firstName: 'updatedFirstNameOK',
@@ -145,28 +145,28 @@ describe('UsersController', () => {
       mockUsersService.update.mockRejectedValue(
         new NotFoundException('Utilisateur non trouvé'),
       );
-      await expect(controller.update('999', updatedUser)).rejects.toThrow(
+      await expect(controller.update(999, updatedUser)).rejects.toThrow(
         NotFoundException,
       );
     });
   });
 
-  /**************************** Pour la fonction remove() ****************************/
+  /**************************** Pour la fonction delete() ****************************/
 
   describe('delete', () => {
-    // Pour le use case OK
+    /** Pour le use case OK **/
     it('On supprime un utilisateur (use case OK)', async () => {
       mockUsersService.delete.mockRejectedValue(undefined);
 
-      expect(await controller.delete('10')).toBeUndefined();
+      expect(await controller.delete(10)).toBeUndefined();
     });
-    // Pour le use case KO
+    /** Pour le use case KO **/
     it('Lance une erreur NotFoundException (use case KO)', async () => {
       mockUsersService.delete.mockRejectedValue(
         new NotFoundException('Utilisateur non trouvé'),
       );
 
-      await expect(controller.delete('999')).rejects.toThrow(NotFoundException);
+      await expect(controller.delete(999)).rejects.toThrow(NotFoundException);
     });
   });
 });
