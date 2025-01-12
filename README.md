@@ -2,8 +2,10 @@
 
 modifier `main.ts` avec le code suivant : 
 
-``  app.enableCors({
+```
+  app.enableCors({
     origin: 'http://localhost:5173',
     methods: 'GET,PUT,POST,DELETE',
     credentials: true,
-  });``
+  });
+```
